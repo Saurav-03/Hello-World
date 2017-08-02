@@ -1,0 +1,1588 @@
+<apex:page applyHtmlTag="false" cache="true" controller="Membership_Payment" action="{!processOnLoad}" sidebar="false"  showheader="false" standardstylesheets="true">
+ <head>
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+        {'gtm.start': new Date().getTime(),event:'gtm.js'}
+        );var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-W5SBNN');</script>
+        <!-- End Google Tag Manager -->
+    </head>
+    <body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W5SBNN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) --> 
+ <apex:stylesheet value="{!URLFOR($Resource.Bootstrap, '/Bootstrap/css/bootstrap.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.RegistrationJsCss, '/RegistrationJsCss/css/clientlibs_modern.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.RegistrationJsCss, '/RegistrationJsCss/css/main.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.RegistrationJsCss, '/RegistrationJsCss/css/static.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.RegistrationJsCss, '/RegistrationJsCss/css/UpdatedCSS.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.RegistrationJsCss, '/RegistrationJsCss/css/customGSA.css')}"/>
+
+
+    <style>
+        .putColor{
+        color : #00ae58 ;
+        }
+        .hed{
+        margin-left: -16px !important;
+        }
+        .rdoposition{
+        margin-left: -11px !important;
+        }
+        
+        
+        .total{
+        margin-top:20px !important;
+        }
+        .heading{
+        margin:12px 0 18px 0 !important;
+        }      
+        .orderTotal {
+        background: #00AE58!important;
+        padding: 5px;
+        color: #ffffff;
+        }
+        .bold{
+        font-weight:bold;
+        }
+        .glyphicon-remove
+        {
+        color:#00AE58!important;
+        cursor:pointer;
+        }
+        .glyphicon-play
+        {
+        background: #00AE58!important;
+        color: #ffffff !important;
+        padding: 0px 0px 0px 5px;
+        font-size: 14px;
+        vertical-align: top;
+        top:3px !important;
+        }
+        .waitlist
+        {
+        color:#00AE58!important;
+        cursor:pointer;
+        }
+        .close-btn{
+        color: #fffff !important;
+        background: none;
+        width: 15px;
+        float: right;
+        right: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 22px;
+        }  
+
+        .align{
+        text-align:left !important;
+        }
+        .act{margin-bottom:7px;
+        }
+        .pop{
+        margin-top:-110px !important;
+        }
+        
+        .alignright{
+        text-align:right;
+        }
+        
+        .displayNone{
+        display: none;
+        }
+        .amount_align{text-align:right;}
+        .right_margin{margin-right: 9px;}
+        .header_style{font-size: 15px;margin-top: 20px;}
+        
+        
+        .TabMainDiv{
+    border-left: 1px solid #e2e2e2;
+    margin-left: 10px;
+    border-right: 1px solid #e2e2e2;
+    margin-right: 37px;
+    padding-right: 0px;
+    width: 98.1%;
+    border-bottom: 1px solid #e2e2e2;
+        }
+        .tabmenu{
+        color:#555;
+        }
+        
+        .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        font-weight:bold;
+        }
+        a:hover{
+        color:#000;
+        }
+        
+        .cancel_btn{
+        display: inline-block;
+        color: #00AE58;
+        background:#ffffff;
+        cursor: pointer;
+        font-size: 15px;
+        border: 1px solid #00AE58;
+        padding: 5px 40px 5px 40px;
+        }  
+        
+        .cancel_btn:hover{
+        display: inline-block;
+        color: #00AE58;
+        background:#ffffff;
+        cursor: pointer;
+        font-size: 15px;
+        border: 1px solid #00AE58;
+        padding: 5px 40px 5px 40px;
+        }
+        
+        .DonationTxtBox1 {
+        width: 138px !important;
+        float: right;
+        margin-left: 10px !important;
+        }
+        
+    </style>
+    
+
+<div data-grid-framework="f4" data-grid-color="darksalmon" data-grid-opacity="0.5" data-grid-zindex="10" data-grid-gutterwidth="10px" data-grid-nbcols="24">
+<div class="off-canvas-wrap">
+<div class="inner-wrap">
+<!--PAGE STRUCTURE: HEADER-->
+    
+<c:Event_Header_New ></c:Event_Header_New>
+    
+<apex:form styleClass="form-horizontal mgn0" > 
+    <input type="hidden" id="flownameID" value="{!flow}"  />
+    <div id="main" class="row">
+     
+     <div class="large-24 medium-24 small-24 columns mainRight">
+           <div class="row mainRightBottom">
+                  <div class="large-24 medium-24 small-24 columns rightBodyLeft">
+                    <!--PAGE STRUCTURE: MIDDLE CONTENT START-->
+                        <div id="mainContent">
+                           <div class="column" id="mydiv"> 
+                           <div class="tab-content">
+                                               
+                           <div id="MEMBERSHIP" class="tab-pane fade in active">
+                            <div class="row">
+                            <div class="columns TabMainDiv">
+                            <div class="columns" id="mydivmain" style="padding-top:10px;padding-bottom:10px;padding-right:30px;padding-left:30px;">
+                                <apex:outputPanel id="result">
+                                    <apex:outputText value="{!TokenError}" />
+                                    <apex:pagemessages id="Errormesaage" />
+                                    <apex:outputPanel rendered="{!!confirmTransactions}">
+                                        <div class="row">
+                                            <h3>
+                                                Payment
+                                            </h3>
+                                            <!--<lable style="text-align: left; font-size:22px;font-weight:bold;"></lable>-->
+                                        </div>                                
+                                        <br />
+                                        <div class="title section">
+                                        </div>
+                                        <div class="row">
+                                                
+                                                <p>
+                                                   Please provide payment details for your membership renewal. Membership and fees are non-refundable and non- transferable.
+                                                    <br/><br/></p>
+                                                
+                                            </div>
+                                        <apex:outputPanel rendered="{!if(OrderTotal>0,true,false)}">
+                                            
+                                            <div class="row">
+                                                <div class="columns medium-24">
+                                                    <p>
+                                                        Invest in a girl and you can change the world. You can make a lasting impact on more girls – add a tax deductible donation to your purchase today!
+                                                        Donations from friends like you provide “WOW!” experiences to thousands of girls throughout our council. Your gift offsets program expenses, subsidizes a girl&#39;s experiences at camp, and provides financial assistance so that any girl can join in the fun.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="columns medium-24">
+                                                    <p>A gift of</p>
+                                                    <p>$35 helps 1st year leaders with start-up materials.</p>
+                                                    <p>$100 provides financial assistance for 6 girls to join Girl Scouts.</p>
+                                                    <p>$300 gives the gift of Girl Scouts to subsidize a girl&#39;s experience for approximately one year.</p>
+                                                    <p>Your gift will touch many lives throughout our council, including the girl you love most. How awesome is that?!?</p>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <br/><br/>
+                                                Yes, I’d like to donate to my local Girl Scout council:
+                                            </div>
+                                            <apex:outputPanel id="DonationSection" >
+                                            <div class="row"> 
+                                                <div class="columns medium-24">
+                                                    <ul class="radio-group fancy_checkbox">
+                                                        <li>
+                                                            <input type="radio" name="optionsRadios" id="DonationRadios1" value="{!option1Value}" onChange="handleChange()"  onclick="onPaymentCheked1(event,this,this.value)" />
+                                                            <label for='DonationRadios1'>
+                                                                <span><span></span></span>
+                                                                $35.00
+                                                            </label>
+                                                        </li>
+                                                        
+                                                        <li>
+                                                            <input type="radio" name="optionsRadios" id="DonationRadios2" value="{!option2Value}" onChange="handleChange()"  onclick="onPaymentCheked1(event,this,this.value)"/>
+                                                            <label for='DonationRadios2'>
+                                                                <span><span></span></span>
+                                                                $50.00
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <input type="radio" name="optionsRadios" id="DonationRadios3" value="{!option3Value}" onChange="handleChange()"  onclick="onPaymentCheked1(event,this,this.value)" />
+                                                            <label for='DonationRadios3'>
+                                                                <span><span></span></span>
+                                                                $100.00
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <input type="radio" name="optionsRadios" id="DonationRadios4" value="{!option4Value}" onChange="handleChange()"  onclick="onPaymentCheked1(event,this,this.value)" />
+                                                            <label for='DonationRadios4'>
+                                                                <span><span></span></span>
+                                                                $200.00
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <input type="radio" name="optionsRadios" id="DonationRadios5" value="{!option5Value}" onChange="handleChange()"   onclick="onPaymentCheked1(event,this,this.value)"/>
+                                                            <label for='DonationRadios5'>
+                                                                <span><span></span></span>
+                                                                $300.00
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <input type="radio" name="optionsRadios" id="DonationRadios6" value="{!option6Value}" onChange="handleChange()" onclick="onPaymentCheked1(event,this,this.value)" />
+                                                            <label for='DonationRadios6'>
+                                                                <span><span></span></span>
+                                                                $500.00
+                                                            </label>
+                                                        </li>
+                                                        <!--
+                                                        <li class="DonationLi">
+                                                            <input type="radio" name="optionsRadios" id="OtherOption" value="{!otherRadio}" class="otherRadio" onclick="onPaymentCheked1(event,this,this.value)"/>
+                                                            <label for='OtherOption'>
+                                                                <span><span></span></span>
+                                                                Other (Minimum $10.00)
+                                                                <input type = "text" id="otherPaymentInputText" value="{!otherPayment}"  disabled="disabled" maxlength="4" class="otherAmtText otherInp otherCheckBox DonationTxtBox"  onChange="getOtherTextValue(event,this);"/>
+                                                            </label>
+                                                            
+                                                        </li>-->
+                                                        
+                                                        <li style="float:left;">
+                                                            <input type="radio" name="optionsRadios" id="OtherOption" value="{!otherRadio}" class="otherRadio" onclick="onPaymentCheked1(event,this,this.value)"/>
+                                                            <label for='OtherOption'>
+                                                                <span><span></span></span>
+                                                                Other (Minimum $10.00)
+                                                                <input type = "text" id="otherPaymentInputText" value="{!otherPayment}"  disabled="disabled" maxlength="8" class="otherAmtText otherInp otherCheckBox DonationTxtBox1"  onChange="getOtherTextValue(event,this);"/>
+                                                            </label>
+                                                            
+                                                        </li>
+                                                        
+                                                        <li>
+                                                            <input type="radio" name="optionsRadios" id="notThisTime" value="{!option7Value}" checked="true" onChange="handleChange()"  onclick="onPaymentCheked1(event,this,this.value)" />
+                                                            <label for='notThisTime'>
+                                                                <span><span></span></span>
+                                                                Not at this Time
+                                                            </label>
+                                                        </li>
+                                                        
+                                                        
+                                                    </ul> 
+                                                    
+                                                </div>
+                                                
+                                                
+                                            </div>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <br/>
+                                        <apex:outputPanel rendered="{!If((CouncilAllowFA4Girl == true && flagGA == true) || (CouncilAllowFA4Adult == true && flagAA == true),true,false)}">
+                                        <div class="row">                       
+                                            <p style="color:red;">Financial Assistance</p>
+                                            <p>{!$Label.Financial_Assistance_Text}
+                                            </p>    
+                                            <apex:outputPanel rendered="{!If(FALink != null,true,false)}">
+                                            <p>Click here for more information on your local council’s <a href="{!FALink}" target="_Blank" style="color:#00ae58;">financial assistance policy.</a>
+                                            </p>  
+                                            </apex:outputPanel>
+                                            <br/>
+                                        </div>                                        
+                                        </apex:outputPanel>
+                                        <!------------------------------code for Lifetime membership here??  rendered="false"-------------------------------->
+                                         <apex:repeat value="{!lstlifetimewrapper}" var="obj" id="myPanelLifeTime"> 
+                                            <apex:outputPanel rendered="{!!obj.isYes}">
+                                                <div class="columns medium-24" style="border:1px solid black; padding-top:5px; font-size: 15px; background:#F0F0F0; font-Weight:bold;margin: 0px 5px 5px 0px; " >
+                                                    
+                                                    <div class="columns medium-24">
+                                                        Would you like to upgrade to a Lifetime Membership ($375) for {!obj.Name}?
+                                                    </div>
+                                                    <br/> <br/>
+                                                    <div class="columns medium-24">
+                                                        <input type="radio" name="r{!obj.oppid}" style="transform: scale(1.5);" onclick="upgradetoLifetimef('{!obj.oppid}');"  /> &nbsp; Yes
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+                                                        <input type="radio" name="r{!obj.oppid}" checked="true" style="transform: scale(1.5);" onclick="RevertfromLifetime('{!obj.oppid}');" /> &nbsp; No
+                                                    </div>
+                                                    
+                                                </div>
+                                            </apex:outputPanel> 
+                                        </apex:repeat> 
+                                        
+                                        <!------------------------------ End of code for Lifetime membership here??-------------------------------->                                     
+                                        
+                                        <!------------------------------------New Table------------------------>
+                                        <apex:outputPanel id="myPanel">
+                                            <br/> 
+                                            <div id="mainContent1" class="columns medium-24" style="border:1px solid black;" >
+                                                <apex:outputPanel id="myPanel2">
+                                                    <div class="row" style="background:#D0D0D0; font-weight: bold; padding: 7px 0 7px 7px;" >
+                                                        <div class="columns medium-5" >
+                                                            <apex:outputtext value="Name" ></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-10" >
+                                                            <apex:outputtext value="Item"></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-5">
+                                                            <apex:outputtext rendered="{!IsFamilyFlow}" value=" Request Aid"></apex:outputtext> 
+                                                        </div>
+                                                        <div class="columns medium-4" style="text-align:right; padding-right: 20px;">
+                                                            <apex:outputtext value="Total"></apex:outputtext>
+                                                        </div>      
+                                                    </div>
+                                                    <!-------------------------Static data------------------------->
+                                                    <!-------------------------End of Static data------------------------->                                              
+                                                    
+                                                    <apex:repeat value="{!lstwrappermembership}" var="a" id="myPanel1" > 
+                                                        <apex:variable var="color" value="{!IF(color == '#F0F0F0', '#FFFFFF', '#F0F0F0')}"/>   
+                                                        <div class="row" style="padding: 7px 0 7px 7px; background-color:{!color}">
+                                                            <div class="columns medium-5">
+                                                                <apex:outputtext value="{!a.Name}"></apex:outputtext>
+                                                            </div>
+                                                            <div class="columns medium-10">
+                                                                <apex:outputText value="{!a.ItemName}" styleClass="font_style"></apex:outputText> 
+                                                            </div>
+                                                            <div class="columns medium-5" style="padding-left:12px;">
+                                                                <apex:inputCheckbox value="{!a.requestFinancialAid}" rendered="{!if((a.IsAllowFA==true && a.IsLifetime==false && a.Isupgraded2Lifetime==false),true,false)}" styleclass="FinancialAidNew" style="transform: scale(1.5);" >
+                                                                    <apex:actionSupport event="onchange" action="{!manageFA}" rerender="result" status="waitStatus2">
+                                                                        <apex:param name="OppID4FA1" assignTo="{!OppID4FA}" value="{!a.oppid}"/>
+                                                                        <apex:param name="FAstatus1" assignTo="{!FAstatus}" value="{!a.requestFinancialAid}"/>
+                                                                    </apex:actionSupport>
+                                                                </apex:inputCheckbox>
+                                                               
+                                                                
+                                                                
+                                                            </div>
+                                                           
+                                                            <div class="columns medium-4" style="text-align:right;">
+                                                                <!--<apex:outputText value="{!a.Amount}"  styleClass="font_style"></apex:outputText> -->
+                                                                <apex:outputText value="{0, number, currency}">
+                                                                        <apex:param value="{!a.Amount}"/>
+                                                                    </apex:outputText>
+                                                            </div>
+                                                        </div>  
+                                                        
+                                                    </apex:repeat>
+                                                    
+                                                    <!-------------------------Static data------------------------->     
+                                                    
+                                                    <apex:outputPanel id="myDonation">
+                                                        <apex:repeat value="{!donationMap}" var="a" >  
+                                                            <apex:variable var="color" value="{!IF(color == '#F0F0F0', '#FFFFFF', '#F0F0F0')}"/> 
+                                                            <div class="row" style="padding: 7px 0 7px 7px; background-color:{!color}">
+                                                                <div class="columns medium-5">
+                                                                    <apex:outputtext value="{!a}"></apex:outputtext>
+                                                                </div>
+                                                                <div class="columns medium-10">
+                                                                    
+                                                                </div>
+                                                                <div class="columns medium-5">
+                                                                </div>
+                                                                <div class="columns medium-4" id="displayDonation" style="text-align:right;">
+                                                                    <apex:outputText value="{0, number, currency}">
+                                                                        <apex:param value="{!donationMap[a]}"/>
+                                                                    </apex:outputText>
+                                                                </div>
+                                                            </div>  
+                                                        </apex:repeat>
+                                                    </apex:outputPanel>
+                                                    <div class="row" style="padding: 7px 0 7px 7px; background:#D0D0D0; font-weight:bold;">
+                                                        <div class="columns medium-5">
+                                                            <apex:outputtext value="Total"></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-10">
+                                                            
+                                                        </div>
+                                                        <div class="columns medium-5">
+                                                            
+                                                        </div>
+                                                        <div class="columns medium-4" style="text-align:right;">
+                                                            <apex:outputText value="{0, number, currency}">
+                                                                <apex:param value="{!OrderTotal}"/>
+                                                            </apex:outputText>
+                                                        </div>                                                    
+                                                    </div> 
+                                                    <!-------------------------End of Static data------------------------->     
+                                                </apex:outputPanel>
+                                            </div>
+                                            <!------------- End of New Table------------------------------->
+                                            
+                                            <div class="row">
+                                                <br/><br/><br/><br/><br/>
+                                            </div>
+                                            
+                                            <apex:outputPanel rendered="{!if(OrderTotal>0,true,false)}">
+                                                <div class="row">
+                                                    <br/><br/><br/><br/>
+                                                    <div class="form-group billingDiv">
+                                                        
+                                                        <div class="columns medium-4 clsAlign" style="font-size:16px" >
+                                                            <b> Billing Address</b>
+                                                        </div>
+                                                        <div class="columns medium-1"> &nbsp;</div>
+                                                        <div class="columns medium-15">
+                                                            <!--<apex:outputPanel rendered="{!isallowaddresslink}">-->
+                                                            <apex:outputPanel rendered="{!IsFamilyFlow}">
+                                                            <a id="commandTxt" class="fillMailingAddress delcursor" onclick="setAddress()" > <strong> Same as my Mailing Address  </strong> </a> 
+                                                            </apex:outputPanel>
+                                                            <apex:inputHidden value="{!address1}" id="address1"/>                                              
+                                                            <apex:inputHidden value="{!city1}" id="city1"/> 
+                                                            <apex:inputHidden value="{!country1}" id="country1"/> 
+                                                            <apex:inputHidden value="{!state1}" id="state1"/> 
+                                                            <apex:inputHidden value="{!zipCode1}" id="zipCode1"/>
+                                                        </div>
+                                                        <div class="columns medium-2"></div>
+                                                    </div>
+                                                </div>  
+                                                <!-- Address --> 
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Address:" id="addressLabel" styleClass="control-label"/>
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            
+                                                            <apex:inputtext id="addressTxt" styleclass="myAddress"  value="{!address}"  onblur="isEmptyTxt('myAddress','Address is Required.')"/>
+                                                        </div>
+                                                        <div class="columns medium-2"></div>
+                                                    </div>
+                                                </div>  
+                                                <!-- City --> 
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="City:" id="cityLabel" styleclass="control-label" />
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext id="cityTxt" styleclass="myCity" value="{!city}" onblur="isEmptyTxt('myCity','City is Required.')" />
+                                                        </div>
+                                                        
+                                                        <div class="columns medium-2"></div>
+                                                    </div>
+                                                </div>  
+                                                <!-- State --> 
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <apex:outputPanel id="pnlstate">
+                                                        <apex:outputPanel rendered="{!if(isOverSeas==true && country!='US',True,False)}">
+                                                         <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="State:" id="stateLabel1" styleclass="pull-right" />
+                                                        </div>
+                                                        <div class="columns medium-1 required"></div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext value="{!state}" id="stateTxt1" styleclass="stateClass">
+                                                            </apex:inputtext>
+                                                        </div>
+                                                        <div class="columns medium-2"></div>
+                                                        </apex:outputPanel>
+                                                       <apex:outputPanel rendered="{!if(isOverSeas==true && country=='US',True,False)}">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="State:" id="stateLabel2" styleclass="pull-right" />
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext value="{!state}" maxLength="2" id="stateTxt2" styleclass="stateClass" onblur="isEmptyTxt('stateClass', 'State is Required.');" >
+                                                            </apex:inputtext>
+                                                        </div>
+                                                        <div class="columns medium-2"></div>
+                                                        </apex:outputPanel>
+                                                        
+                                                       <apex:outputPanel rendered="{!!isOverSeas}">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="State:" id="stateLabel" styleclass="pull-right" />
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext value="{!state}" maxLength="2" id="stateTxt" styleclass="stateClass" onblur="isEmptyTxt('stateClass', 'State is Required.');" >
+                                                            </apex:inputtext>
+                                                        </div>
+                                                        <div class="columns medium-2"></div>
+                                                        </apex:outputPanel>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div> 
+                                                <!-- Zip Code -->    
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Zip Code:" id="zipLabel" styleclass="control-label" />
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext id="zipCode" styleclass="myZipCode" value="{!zipCode}" onblur="isValidZip('myZipCode','Zip Code')"/>
+                                                        </div>
+                                                        <div class="columns medium-1"></div>
+                                                    </div>
+                                                </div>  
+                                                
+                                                <!-- Country -->     
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Country:" id="countryLabel" styleclass="control-label" />
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:selectlist value="{!country}" multiselect="false" size="1" styleclass="listCountryItemsClass dropdown myCountry1 countryName" onblur="isEmptyDrop('listCountryItemsClass','Country is Required.')">
+                                                                <apex:actionSupport event="onchange" rerender="pnlstate" status="waitStatus2" oncomplete="clereState('.countryName');"/>
+                                                                <apex:selectoptions value="{!listCountryItems}" />
+                                                            </apex:selectlist>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class="columns medium-2"></div>
+                                                    </div>
+                                                </div>   
+                                                
+                                                <!-- Name on Card -->     
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Card Holder Name:" id="cardNameLabel" styleClass="control-label"/>
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext id="cardNameTxt" styleclass="myCardHolderName" value="{!cardHolderName}" onblur="isEmptyTxt('myCardHolderName','Name on Card is Required.')" />
+                                                        </div>
+                                                        
+                                                        <div class="columns medium-2"></div>
+                                                    </div>
+                                                </div>  
+                                                
+                                                <!-- Card Number -->                                   
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Card Number:" id="cardNumberLabel" styleClass="control-label"/>
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext id="cardNumberTxt" styleclass="myCardNumber" value="{!cardNumber}" onblur="validateCardNo('myCardNumber','mySecurityCode','Card Number is Required.')" />
+                                                        </div>
+                                                        <div class="columns medium-2"></div>
+                                                    </div>
+                                                </div>
+                                                <!-- Expiration -->   
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Expiration Month:" id="expirationmonth" styleClass="control-label"/>
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:selectlist value="{!expMonth}" multiselect="false" size="1" styleclass="listexpMonthClass dropdown" onblur="isEmptyDrop('listexpMonthClass', 'Month is Required.')" >
+                                                                <apex:selectoptions value="{!listexpMonth}" />
+                                                            </apex:selectlist>
+                                                        </div>
+                                                        
+                                                        <div class="columns medium-1"></div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Expiration Year:" id="expirationyear" styleClass="control-label"/>
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:selectlist value="{!expYear}" multiselect="false" size="1" styleclass="listexpYearClass dropdown" onblur="isEmptyDrop('listexpYearClass', 'Year is Required.')" >
+                                                                <apex:selectoptions value="{!listexpYear}" />
+                                                            </apex:selectlist>
+                                                            
+                                                        </div>
+                                                        <div class="columns medium-1"></div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="font-size:14px;">
+                                                    <div class="form-group biilingDiv">
+                                                        <div class="columns medium-8 clsAlign" >
+                                                            <apex:outputlabel value="Security Code:" id="cvvNumber" styleClass="control-label"/>
+                                                        </div>
+                                                        <div class="columns medium-1 required">*</div>
+                                                        <div class="columns medium-11">
+                                                            <apex:inputtext id="securityTxt" styleclass="mySecurityCode" value="{!securityCode}" onblur="isValidSecurityCode('mySecurityCode','myCardNumber','Security Code is Required.')" />
+                                                        </div>
+                                                        
+                                                        <div class="columns medium-2"></div>
+                                                    </div>
+                                                </div> 
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <div class="row" style="font-size:14px;">
+                                            <div class="form-group biilingDiv" >
+                                                <div class="columns medium-10 clsAlign" >
+                                                    &nbsp;
+                                                </div>
+                                                <!--<div class="columns medium-1">
+                                                    
+                                                </div>-->
+                                                <div class="columns medium-5">
+                                                    <apex:commandButton value="Cancel" id="Btn1" style="Display:none;" ></apex:commandButton>   
+                                                    <apex:commandButton action="{!Cancel}" value="Cancel" id="Btn2" styleclass="button-add col-md-12" status="waitStatus2" ></apex:commandButton>   
+                                                </div>
+                                                
+                                                <div class="columns medium-5"><!-- onclick="return validateFormRPOS();"-->
+                                                <!-- GSA-10065 -->
+                                                  
+                                                       <apex:outputPanel id="df">
+                                                        <apex:outputPanel rendered="{!If(inputValue == true,true,false)}"> 
+                                                           <!--<a type="button" class="form-control btn" data-toggle="modal" data-target="#FAPopup">CHECKOUT</a>  -->
+                                                           <apex:commandButton value="Continue" action="{!showPopup}" styleclass="btn col-md-12 submitButton" id="btnClick" reRender="RegPanel,df,tstpopup,myPanel,result,Errormesaage"/>
+                                                           
+                                                        </apex:outputPanel> 
+                                                       
+                                                        <apex:outputPanel rendered="{!If(inputValue == false,true,false)}"> 
+                                                            <apex:commandbutton value="Continue" styleclass="btn col-md-12 submitButton"  reRender="result,Errormesaage" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',true,false)}" id="Btn3" action="{!processMyOrder}"></apex:commandbutton> 
+                                                            <apex:commandbutton value="Continue" styleclass="btn col-md-12 submitButton" reRender="result,Errormesaage" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',false,true)}"  id="Btnwotpaypal1" action="{!processMyOrderwithoutPaypal}"></apex:commandbutton> 
+                                                        </apex:outputPanel> 
+                                                       
+                                                       </apex:outputPanel> 
+                                                <!-- End -->
+                                                
+                                                   <!-- <apex:commandbutton value="Continue" styleclass="btn col-md-12 submitButton"  reRender="result,Errormesaage" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',true,false)}" id="Btn3" action="{!processMyOrder}"></apex:commandbutton> 
+                                                    <apex:commandbutton value="Continue" styleclass="btn col-md-12 submitButton" reRender="result,Errormesaage" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',false,true)}"  id="Btnwotpaypal1" action="{!processMyOrderwithoutPaypal}"></apex:commandbutton>-->
+                                                     <!--<a type="button" class="form-control btn" data-toggle="modal" data-target="#FAPopup">CHECKOUT</a> -->
+                                                </div>
+                                                
+                                                <div class="columns medium-2"></div>
+                                            </div>
+                                        </div>
+                                        
+  </apex:outputPanel>
+                                    <!--- ============= Confirmtion Section Strat ========================= ---->
+                                    <apex:outputPanel rendered="{!confirmTransactions}">
+                                        <div class="row" id="mydiv123"> 
+                                            <div class="large-24 medium-24 small-24 columns left">
+                                                <div style="margin-left: -8px; position:relative;">
+                                                  <p>
+                                                  <apex:outputPanel rendered="{!!isregFlow}"><span style="font-size:22px; font-weight:bold">Confirm Your Renewal</span></apex:outputPanel>
+                                                  <apex:outputPanel rendered="{!isregFlow}"><span style="font-size:22px; font-weight:bold">Confirm Your Membership</span></apex:outputPanel>
+                                                  <br/>
+                                                   Membership Year Oct 1, {!(selectedYear-1)} to Sept 30, {!selectedYear}
+                                                   </p>
+                                                    <p>Please click “Submit” to complete this transaction.<br/>
+                                                        <apex:outputPanel rendered="{!!isregFlow}">Selecting the “X” will remove a girl/adult from this transaction.<br/></apex:outputPanel>
+                                                        Selecting “Cancel” will cancel this transaction.
+
+                                                    </p>
+                                                   <!-- <apex:outputPanel rendered="{!!isregFlow}"><h7>To make changes, please return to the {!flow} tab.</h7><br/></apex:outputPanel> -->
+                                                </div><br/><br/>
+                                            </div>
+                                            
+                                            <!----------------------------------------------Second screen start ----------------------------------->
+                                            <br/> 
+                                            <div id="mainContent1" class="columns medium-24" style="border:1px solid black;" >
+                                                <apex:outputPanel id="myPanel22">
+                                                    <apex:outputPanel rendered="{!if(lstGirlwrapper.size>0,true,false)}">
+                                                    <div class="row" style="background:#D0D0D0; font-weight: bold; padding: 7px 0 7px 7px;" >
+                                                        <apex:outputPanel rendered="{!!isregFlow}">
+                                                        <div class="columns medium-2" >
+                                                            Girl
+                                                        </div>
+                                                        </apex:outputPanel>
+                                                        <div class="columns medium-5" >
+                                                            <apex:outputtext value="Name" ></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-4" >
+                                                            <apex:outputtext value="Membership"></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-7" >
+                                                            <apex:outputtext value="Participation"></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-2">
+                                                        </div>
+                                                        <div class="columns medium-4" style="text-align:right;"><!--  padding-right: 20px;-->
+                                                            <apex:outputtext value="Total"></apex:outputtext>
+                                                        </div>        
+                                                    </div>
+                                                    <apex:repeat value="{!lstGirlwrapper}" var="a"> 
+                                                        <apex:variable var="color" value="{!IF(color == '#F0F0F0', '#FFFFFF', '#F0F0F0')}"/>   
+                                                        <div class="row" style="padding: 7px 0 7px 7px; background-color:{!color}">
+                                                            <apex:outputPanel rendered="{!!isregFlow}">
+                                                            <div class="columns medium-2" >
+                                                               <a id="del33" onclick="Delete('{!a.CMid}');" style="cursor:pointer;" aria-hidden="true" data-toggle="modal" data-target="#RemoveModal"><span style="color:#006F38" class="glyphicon glyphicon-remove"></span></a>
+                                                            </div>
+                                                            </apex:outputPanel>
+                                                            <div class="columns medium-5">
+                                                                <apex:outputtext value="{!a.Name}"></apex:outputtext> &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-4">
+                                                                <apex:outputText value="{!a.MembershipName}" styleClass="font_style"></apex:outputText> &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-7">
+                                                               <apex:outputText value="{!a.Participation}" styleClass="font_style"></apex:outputText> &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-2">
+                                                               <apex:outputText value="{!a.FAText}" styleClass="font_style"></apex:outputText> &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-4" style="text-align:right;">
+                                                                <!--<apex:outputText value="{!a.Amount}"  styleClass="font_style"></apex:outputText> -->
+                                                                <apex:outputText value="{0, number, currency}"  styleClass="font_style">
+                                                                    <apex:param value="{!a.Amount}"/>
+                                                                </apex:outputText> 
+                                                            </div>
+                                                        </div>  
+                                                        
+                                                    </apex:repeat>
+                                                    </apex:outputPanel>
+                                                    
+                                                    <apex:outputPanel rendered="{!if(lstAdultwrapper.size>0,true,false)}">
+                                                    <div class="row" style="background:#D0D0D0; font-weight: bold; padding: 7px 0 7px 7px;" >
+                                                        <apex:outputPanel rendered="{!!isregFlow}">
+                                                        <div class="columns medium-2" >
+                                                            Adult
+                                                        </div>
+                                                        </apex:outputPanel>
+                                                        <div class="columns medium-5" >
+                                                            <apex:outputtext value="Name" ></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-4" >
+                                                            <apex:outputtext value="Membership"></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-7" >
+                                                            <apex:outputtext value="Participation"></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-2">
+                                                        </div>
+                                                        <div class="columns medium-4" style="text-align:right;"><!--  padding-right: 20px;-->
+                                                            <apex:outputtext value="Total"></apex:outputtext>
+                                                        </div>      
+                                                    </div>
+                                                    <apex:repeat value="{!lstAdultwrapper}" var="a"> 
+                                                        
+                                                        <apex:variable var="color" value="{!IF(color == '#F0F0F0', '#FFFFFF', '#F0F0F0')}"/>   
+                                                        <div class="row" style="padding: 7px 0 7px 7px; background-color:{!color}">
+                                                            <apex:outputPanel rendered="{!!isregFlow}">
+                                                            <div class="columns medium-2" >
+                                                                <a id="del33" onclick="Delete('{!a.CMid}');" style="cursor:pointer;" aria-hidden="true" data-toggle="modal" data-target="#RemoveModal"><span style="color:#006F38" class="glyphicon glyphicon-remove"></span></a>
+                                                            </div>
+                                                            </apex:outputPanel>
+                                                            <div class="columns medium-5">
+                                                                <apex:outputtext value="{!a.Name}"></apex:outputtext> &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-4">
+                                                                <apex:outputText value="{!a.MembershipName}" styleClass="font_style"></apex:outputText>  &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-7">
+                                                               <apex:outputText value="{!a.Participation}" styleClass="font_style"></apex:outputText> &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-2">
+                                                               <apex:outputText value="{!a.FAText}" styleClass="font_style"></apex:outputText> &nbsp;
+                                                            </div>
+                                                            <div class="columns medium-4" style="text-align:right;">
+                                                                <!-- <apex:outputText value="{!a.Amount}"  styleClass="font_style"></apex:outputText> -->
+                                                                <apex:outputText value="{0, number, currency}"  styleClass="font_style">
+                                                                    <apex:param value="{!a.Amount}"/>
+                                                                </apex:outputText> 
+                                                            </div>
+                                                        </div>  
+                                                        
+                                                    </apex:repeat>
+                                                    </apex:outputPanel>
+                                                    <!-------------------------Static data------------------------->     
+                                                    <apex:outputPanel id="myDonation2">
+                                                        <apex:repeat value="{!ConfirmdonationMap}" var="a" >  
+                                                            <apex:variable var="color" value="{!IF(color == '#F0F0F0', '#FFFFFF', '#F0F0F0')}"/> 
+                                                            <div class="row" style="padding: 7px 0 7px 7px; background-color:{!color}">
+                                                                <div class="columns medium-5">
+                                                                    <apex:outputtext value="{!a}"></apex:outputtext>
+                                                                </div>
+                                                                <div class="columns medium-10">
+                                                                    
+                                                                </div>
+                                                                <div class="columns medium-5">
+                                                                </div>
+                                                                <div class="columns medium-4" id="displayDonation" style="text-align:right;">
+                                                                    <apex:outputText value="{0, number, currency}">
+                                                                        <apex:param value="{!ConfirmdonationMap[a]}"/>
+                                                                    </apex:outputText>
+                                                                </div>
+                                                            </div>  
+                                                        </apex:repeat>
+                                                    </apex:outputPanel>
+                                                    <div class="row" style="padding: 7px 0 7px 7px; background:#D0D0D0; font-weight:bold;">
+                                                        <div class="columns medium-5">
+                                                            <apex:outputtext value="Total"></apex:outputtext>
+                                                        </div>
+                                                        <div class="columns medium-10">
+                                                            
+                                                        </div>
+                                                        <div class="columns medium-5">
+                                                            
+                                                        </div>
+                                                        <div class="columns medium-4" style="text-align:right;">
+                                                            <apex:outputText value="{0, number, currency}">
+                                                                <apex:param value="{!ConfirmationTotal}"/>
+                                                            </apex:outputText>
+                                                        </div>                                                    
+                                                    </div> 
+                                                    <!-------------------------End of Static data------------------------->     
+                                                </apex:outputPanel>
+                                            </div>
+                                            <!------------- End of New Table------------------------------->
+                                            
+                                            <div class="row">
+                                                <br/><br/><br/><br/><br/>
+                                            </div>
+                                            <!----------------------------------------------End------------------------------------------>
+                                            <div class="row total " >
+                                                <div class="large-16 medium-18 small-24 columns left">
+                                                    &nbsp;
+                                                </div>
+                                                
+                                            </div>
+                                            <!--------------------------------------------------------------------------------------------------->
+                                            <div class="row" style="margin-top:30px;" >
+                                                <div class="large-14 medium-14 small-24 columns ">&nbsp;</div>
+                                                <div class="large-5 medium-5 small-4 columns alignright"><!-- action="{!ConfirmCancel}"-->
+                                                    <a id="del" style="cursor:pointer; border: 1px solid #00AE58;padding: 5px 40px 5px 40px;"  class="cancel-btn medium-12"  data-toggle="modal" data-target="#RemoveModalAll">CANCEL</a>
+                                                </div>
+                                                
+                                                <div class="large-5 medium-5 small-4 columns alignright" style="margin-top: -12px;">
+                                                     <apex:commandButton id="btnSubmit"  styleClass="btn btnSubmit" value="SUBMIT" reRender="result,Errormesaage" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',true,false)}" action="{!Submit}" />
+                                                     <apex:commandButton id="btnSubmit1" styleClass="btn btnSubmit" value="SUBMIT" reRender="result,Errormesaage" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',false,true)}" action="{!SubmitwithoutPaypal}"/>
+                                                    <apex:commandButton value="Processing..." id="Btnprocess" disabled="true" styleClass="btn col-md-12 Btnprocess displayNone"/>
+                                                </div>
+                                                
+                                            </div>
+                                            <!------------------------------------------------------------------------------------------------------------->
+                                            
+                                        </div>
+  </apex:outputPanel>
+                                    <!--- ============= Confirmtion Section End ========================= ----> 
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        <input type="hidden" name="isOverseasChk" id="isOverSeasChk" value="{!isOverSeas}"/>
+                        <input type="hidden" name="inputVal" id="inputVal" value="{!inputValue}"/>
+                  </div>
+          </div>        
+    </div>                    
+    
+    </div>
+    
+    
+    <apex:actionFunction name="pymentCheckedAction" action="{!createTransactionRecord}" reRender="myPanel,Errormesaage" status="waitStatus2">
+        <apex:param name="arg1" value="val" assignTo="{!amountValue}"/>
+    </apex:actionFunction>
+    <input type="hidden" name="donationAmount" id="donationAmount" value="{!amountValue}"/>
+    
+    <apex:actionFunction name="upgradetoLifetimef" Action="{!upgradetoLifetime}" reRender="myPanel,lifetimelst,Errormesaage" status="waitStatus2" >
+            <apex:param name="OppidID" value="" assignTo="{!OppID4FA}"/>
+      </apex:actionFunction>
+    
+    <apex:actionFunction action="{!RevertfromLifetime}" name="RevertfromLifetime" reRender="myPanel,lifetimelst,Errormesaage" status="waitStatus2" >
+       <apex:param name="revert" value="" assignTo="{!OppID4FA}"/>
+       </apex:actionFunction>
+
+    <span class="deleteId" style="display:none;"></span>
+    <apex:actionFunction name="RemoveCMFromOrder" Action="{!RemoveCM}" reRender="result,Errormesaage" status="waitStatus2" >
+            <apex:param name="CMID" value="" assignTo="{!RemoveCMID}"/>
+      </apex:actionFunction>
+    <apex:actionFunction name="RemoveAll" Action="{!RemoveAll}" reRender="result,Errormesaage" status="waitStatus2" >
+      </apex:actionFunction>
+    <!-----------------------------Remove Dialog Start------------------------------------------------->
+    <div id="RemoveModal" class="modal fade" role="dialog" >
+        <div class="modal-dialog" style="width:420px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close-btn" onclick="RemoveDeleteId();" data-dismiss="modal"> &times;  </span>
+                    <h4 class="modal-title">CONFIRM</h4>
+                </div>
+                <div class="modal-body">
+                    <!--<p style="text-align:left; margin-left:13px;">This will cancel or remove this activity from your order.</p>-->
+                    <p style="text-align:left; margin-left:13px;">Are you sure you want to remove? Yes or No</p>
+                    <div class="form-group" style="margin-top:-20px;">
+                        <br/>
+                        <a class="btn btn-selected" id="ThankyouClosey1" data-dismiss="modal" onclick="DeleteReg();"><span>Yes</span></a>&nbsp;
+                        <input type="button" class="btn " id="DeleteNo" data-dismiss="modal" tabindex="0" value="NO" />          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="RemoveModalAll" class="modal fade" role="dialog" >
+        <div class="modal-dialog" style="width:420px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close-btn" data-dismiss="modal"> &times;  </span>
+                    <h4 class="modal-title">CONFIRM</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="text-align:left; margin-left:13px;">Are you sure you want to cancel and remove all of your renewals? Yes or No</p>
+                    <div class="form-group" style="margin-top:-20px;">
+                        <br/>
+                        <a class="btn btn-selected" id="ThankyouClosey1" data-dismiss="modal" onclick="RemoveAll();"><span>Yes</span></a>&nbsp;
+                        <input type="button" class="btn " id="DeleteNo" data-dismiss="modal" tabindex="0" value="NO" />          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-----------------------------Remove Dialog End-------------------------------------------------> 
+    
+    
+     <!---Popup FA Confirmation Message---->
+                    
+                                                                                                                                                               
+               
+  <!-- End FA Popup -->
+ 
+  <!-- GSA-10065 --> 
+      <apex:outputPanel rendered="{!if($Label.TurnPaypalONforRenewal=='1',false,true)}">                                                                                                                                                         
+            <apex:actionFunction name="funTwo" Action="{!processMyOrderwithoutPaypal}" reRender="RegPanel,df,tstpopup,myPanel,result,Errormesaage"></apex:actionFunction>           
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!if($Label.TurnPaypalONforRenewal=='1',true,false)}">                                                                                                                                                         
+            <!--<apex:actionFunction name="checkOutClickNew" Action="{!processMyOrder}" reRender="RegPanel,df,tstpopup,myPanel,result,Errormesaage"></apex:actionFunction>-->
+            <apex:actionFunction name="funTwo" Action="{!processMyOrder}" reRender="RegPanel,df,tstpopup,myPanel,result,Errormesaage"></apex:actionFunction>
+        </apex:outputPanel>  
+        
+        
+        <!--<apex:actionFunction name="faClick" Action="{!faChekboxClick}" status="myStatus2" reRender="df"></apex:actionFunction>-->
+        <!--<apex:actionFunction name="uncheckClickNew" Action="{!noButtonClick}"></apex:actionFunction>-->
+        
+        <apex:actionFunction name="uncheckClick" Action="{!noButtonClick}" status="myStatus2" reRender="RegPanel,df,tstpopup,myPanel,result,mainContent1,myPanel2,myDonation,myPanel1"></apex:actionFunction>
+        <apex:actionFunction name="closePopup" Action="{!onClosePopup}" status="myStatus2" reRender="RegPanel,df,tstpopup,myPanel,result,mainContent1,myPanel2,myDonation"></apex:actionFunction>       
+        <apex:actionstatus id="myStatus2" startText="Processing...">
+        <apex:facet name="start">
+        <div class="waitingSearchDiv" id="el_loading" style="background-color: #f9f9f9;height:100%; opacity:.75;width:100%; z-index:1040; position: absolute;"> 
+        <div class="waitingHolder" style="position:fixed; left: 50%;top: 50%;margin-left: -50px;margin-bottom: -50px;margin-right: -50px;">
+        <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+        <span class="waitingDescription">Loading...</span>
+        </div>
+        </div>
+        </apex:facet>
+        </apex:actionstatus>
+    </apex:form>
+    
+     <apex:form id="cnfMsg">
+       <!--<apex:commandButton value="Show Pop up" action="{!showPopup}" rerender="tstpopup"/>-->
+       
+        <apex:outputPanel id="tstpopup" >
+       
+        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
+        
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+             <div class="modal-header" style="color:white;"> Please Confirm  <span class="close-btn" data-dismiss="tstpopup" onclick="closePopup();"> ×  </span></div>
+            
+             <p style="margin: 3%;"> Are you sure you want to request financial aid? </p>
+             <br/>
+                <!--<apex:commandButton value="Hide Pop up" action="{!closePopup}" rerender="tstpopup"/>-->
+                
+                 
+                    
+         <apex:outputPanel rendered="{!if($Label.TurnPaypalONforRenewal=='1',false,true)}">                                                                                                                                                         
+            <div id="popupBtns" style="margin-left: 32%;"> 
+             <apex:commandbutton value="Yes" styleclass="btn col-md-12 submitButton btnNew" style="width:50px;" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',false,true)}" id="Btnwotpaypal1New"   onclick="funOne();this.disabled=true;"></apex:commandbutton> 
+             &nbsp;&nbsp;&nbsp;<input type="button" class="btnNew" id="DeleteNoNew" data-dismiss="modal" tabindex="0" onclick="uncheckClick();this.disabled=true;" value="NO" />         
+            </div><br/>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!if($Label.TurnPaypalONforRenewal=='1',true,false)}">                                                                                                                                                         
+            <div id="popupBtns" style="margin-left: 32%;"> 
+             <apex:commandbutton value="Yes" styleclass="btn col-md-12 submitButton btnNewYes" style="width:50px;" status="waitStatus2" rendered="{!if($Label.TurnPaypalONforRenewal=='1',true,false)}" id="Btn3" onclick="return funOne(); this.disabled=true;"></apex:commandbutton>           
+             &nbsp;&nbsp;&nbsp;<input type="button" class="btnNew" id="DeleteNoNew" data-dismiss="modal" tabindex="0" onclick="uncheckClick();this.disabled=true;" value="NO" />         
+            </div>
+        </apex:outputPanel>  <br/>
+        
+            </apex:outputPanel>
+        </apex:outputPanel>
+     
+     
+    </apex:form>
+ 
+    <style type="text/css">
+    
+        
+        .btnNew{
+                 background: #00AE58!important;
+                color: #fff !important;
+                border: none !important;
+                border-radius: 0px !important;
+                font-weight: bold !important;
+                font-size: 16px !important;
+                text-transform: uppercase;
+                padding: 7px 10px !important;
+                text-align: center;
+                box-shadow: none !important;
+                outline: none !important;
+                display: inline-block;
+                margin: 0 2px;
+        }
+    
+        .custPopup{
+                   background-color: white;
+                    border-width: 2px;
+                    /* border-style: solid; */
+                    z-index: 9999;
+                    left: 50%;
+                    padding: 10px;
+                    position: absolute;
+                    width: 41%;
+                    margin-left: -11%;
+                    top: 68%;
+                    padding: 0px;
+                    margin-top: 33%%;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+    </style>
+    
+</div>
+    
+<c:Event_Footer_New />
+  <!--<c:EventsJs />-->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"/>     
+</div>
+</div>
+
+    
+    <apex:actionstatus id="waitStatus2" startText="Processing...">
+        <apex:facet name="start">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: #333333;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                <div style="display: inline-block; padding: 2px;  width: 225px;">
+                    <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                    <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionstatus>
+    
+    <apex:outputPanel >
+    
+    <script>
+      function funOne(){
+      
+   funTwo();
+           return false;
+  }
+      
+      
+    function setYes(obj){
+      //  alert(obj);
+    upgradetoLifetimef(obj);
+      //  alert('asasd');
+    }
+    
+    $("#Btn3New1").click(function(){
+        $(".custPopup").css("display", "none");
+    });
+    
+    function conutinueProcess(){
+        alert(111);
+        return true;
+    }
+    
+        var inputVal = $('#inputVal').val();
+     $("#DeleteNoNew").click(function(){         
+           //  alert("start"); 
+        // $('.FinancialAidNew').find('input:checkbox').prop('checked', false); 
+     })
+        
+    function Delete(abc){  
+        $(".deleteId").text(abc);
+    }
+    function RemoveDeleteId(){  
+        $(".deleteId").text('');
+    }
+    
+    function DeleteReg(){  
+        var delId = $(".deleteId").text();
+        //upgradetoLifetimef(delId);
+        RemoveCMFromOrder(delId);
+    }
+    
+    
+    function View(ActivityId){
+        ViewActivityDetails(ActivityId);
+        
+        
+    }
+    function ViewPKG(ActivityId){
+        ViewActivityDetailsPKG(ActivityId);
+        
+        
+    }
+    
+    function setAddress() {    
+        $(".myAddress").val($("[id*='address1']").val());
+        $(".myCity").val($("[id*='city1']").val());
+        $(".myCountry1").val($("[id*='country1']").val());
+        $(".stateClass").val($("[id*='state1']").val());
+        $(".myZipCode").val($("[id*='zipCode1']").val());
+        
+    }
+
+    function validateFormRPOS() {
+        $(".submitButtonRPIC").hide();
+        $(".submitButtonprocessingRPIC ").hide();
+        $(".submitButtonRPIC").text('Test message here');
+        
+        var process = false;
+        
+        var address = isEmptyTxt('myAddress', 'Address is Required.');
+        var city = isEmptyTxt('myCity', 'City is Required.');
+        var state = isEmptyTxt('stateClass', 'State is Required.');
+        var zip = isValidZip('myZipCode', 'Zip Code');
+        var country = isEmptyDrop('listCountryItemsClass', 'Country is Required.');
+        var nameOnCard = isEmptyTxt('myCardHolderName', 'Name on Card is Required.');
+        var cardno = validateCardNo('myCardNumber', 'mySecurityCode', 'Card Number is Required');
+        var month = isEmptyDrop('listexpMonthClass', 'Month is Required.');
+        var year = isEmptyDrop('listexpYearClass', 'Year is Required.');
+        var code = isValidSecurityCode('mySecurityCode', 'myCardNumber', 'Security Code is Required.');
+        
+        //handleChange();    
+        
+        var chk = true;
+        if ($("input[id*='OtherOption']").is(':checked')) {
+            chk = checkvalue('otherInp');       
+        }
+        else {        
+            chk = true;       
+        }
+        
+        if (address && city && state && zip && country && nameOnCard && cardno && month && year && code && chk ) { process = true; }
+        
+        if (process == true) {
+            $(".submitButton").hide();
+            $(".submitButtonprocessing1").show();
+            return true;
+        }
+        return false;
+        
+    }
+    function submitButtonRPICClick(){
+        $(".submitButtonRPIC").hide();
+        $(".submitButtonprocessingRPIC").show();
+        return false;
+    }
+    
+    $(document).ready(function() {
+        $(".Btnprocess").hide();
+        $(".btnSubmit").show();
+        
+        $(".btnSubmit").click(function(){
+            $(".btnSubmit").hide();
+            $(".Btnprocess").show();
+        });
+        
+    });
+    
+    function handleChange(){
+        $('.otherInp').siblings("div").remove();
+        $('.otherInp').val('');
+        $('.otherInp').removeClass(".alert alert-danger");
+        
+    }
+    
+    function checkvalue(objId){
+        var value = $('.' + objId).val();
+        chk = IsNumeric(value);     
+        if(chk == true){
+            
+            if(value < 10 )
+            {
+                $('.' + objId).siblings("div").remove();
+                $('.' + objId).after("<div style='width: 340px;'><br/><p>The minimum donation amount is $10.00.</p></div>");
+                $('.' + objId).addClass(".alert alert-danger");
+                return false;
+            }
+            else
+            {
+                $('.' + objId).siblings("div").remove();
+                $('.' + objId).removeClass(".alert alert-danger");
+                return true
+            }
+        }else
+        {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div> <br/>Invalid Amount.</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            return false;
+        }
+    }
+    
+    function IsNumeric(num) {     
+        return !isNaN(parseFloat(num)) && isFinite(num);
+    }
+    
+    function validateCardNo(objId, securityCodeId, msg) {
+        
+        var cardNumber = $('.' + objId).val();
+        cardNumber = $.trim(cardNumber);
+        var cardType = getCardType(cardNumber);
+        
+        if (cardNumber === null || cardNumber === '') {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div>" + msg + "</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else if (cardNumber.match(/^[0-9-+]+$/) === null) {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div> Invalid Card Number .</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else if (cardNumber.length > 16) {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div>Card Number should be smaller than 16 digits.</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else if (cardType == "unknown") {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div>Invalid card type.</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).removeClass(".alert alert-danger");
+            
+            var securityCode = $(".mySecurityCode").val();
+            
+            IsSuccess = true;
+            if (securityCode.length > 0) {
+                
+                $('.' + objId).siblings("div").remove();
+                $('.' + objId).removeClass(".alert alert-danger");
+                
+                $('.' + securityCodeId).siblings("div").remove();
+                $('.' + securityCodeId).removeClass(".alert alert-danger");
+                
+                if (cardType == "amex" && securityCode.length != 4) {
+                    $('.' + securityCodeId).after("<div>Security Code must be 4 digits.</div>");
+                    $('.' + securityCodeId).addClass(".alert alert-danger");
+                    IsSuccess = false;
+                }
+                else if (cardType != "amex" && securityCode.length != 3) {
+                    $('.' + securityCodeId).after("<div>Security Code must be 3 digits.</div>");
+                    $('.' + securityCodeId).addClass(".alert alert-danger");
+                    IsSuccess = false;
+                }
+            }
+        }
+        return IsSuccess;
+    }
+    
+    function isValidSecurityCode(objId,cardId, msg) {
+        
+        var security = $('.'+objId).val();
+        if (security === null || security === '') {
+            $('.'+objId).siblings("div").remove();
+            $('.'+objId).after("<div>"+msg+"</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        }
+        else {
+            $('.'+objId).siblings("div").remove();
+            $('.'+objId).removeClass(".alert alert-danger");
+            
+            var creditCardNo = $('.' + cardId).val();
+            IsSuccess = true;
+            if (creditCardNo.length == 0) {
+                $('.' + cardId).siblings("div").remove();
+                $('.' + cardId).removeClass(".alert alert-danger");
+                
+                $('.' + cardId).after("<div>Please enter card number.</div>");
+                $('.' + cardId).addClass(".alert alert-danger");
+                IsSuccess = false;
+            } else {
+                $('.' + cardId).siblings("div").remove();
+                $('.' + cardId).removeClass(".alert alert-danger");
+                
+                var cardType = getCardType(creditCardNo);
+                if (cardType == "unknown") {
+                    $('.' + cardId).after("<div>Invalid card type.</div>");
+                    $('.' + cardId).addClass(".alert alert-danger");
+                    IsSuccess = false;
+                } else if (cardType == "amex" && security.length != 4) {
+                    $('.' + objId).after("<div>Security Code must be 4 digits.</div>");
+                    $('.' + objId).addClass(".alert alert-danger");
+                    IsSuccess = false;
+                }
+                    else if (cardType != "amex" && security.length != 3) {
+                        $('.' + objId).after("<div>Security Code must be 3 digits.</div>");
+                        $('.' + objId).addClass(".alert alert-danger");
+                        IsSuccess = false;
+                    }
+            }
+        }
+        return IsSuccess;
+    }
+    
+    function getCardType(cardNumber) {
+        var result = 'unknown';
+        if (new RegExp("^5[1-5][0-9]{14}$", "i").test(cardNumber)) {
+            result = 'mastercard';
+        } else if (new RegExp("^4[0-9]{12}(?:[0-9]{3})?$", "i").test(cardNumber)) {
+            result = 'visa';
+        } else if (new RegExp("^3[47][0-9]{13}$", "i").test(cardNumber)) {
+            result = 'amex';
+        } else if (new RegExp("^6(?:011|5[0-9]{2})[0-9]{12}$", "i").test(cardNumber)) {
+            result = 'discover';
+        } else if (new RegExp("^3(?:0[0-5]|[68][0-9])[0-9]{11}$", "i").test(cardNumber)) {
+            result = 'diners club';
+        } else if (new RegExp("^(?:2131|1800|35/d{3})/d{11}$", "i").test(cardNumber)) {
+            result = 'jcb';
+        }
+        return result;
+    }
+    
+    function binFunction(){
+        $(".editDonationAmount").on('click',function(){
+            $(".showDonationTextBox").show();
+            $(".hideDonationAmount").hide();
+        });
+        
+        $(".amttxt").on('blur',function(){
+            var donationAmt = $(this).val(); 
+            var totalMembership = $('#hidentotal').val(); 
+            if(donationAmt =='' || donationAmt =='undefined') { 
+                $('.displaytotal').html('$'+totalMembership);
+                $('.displaytotalNew').html('$'+totalMembership);
+                $('.updateDontaionAmt').html('$0.00');
+                $(".showDonationTextBox").hide();
+                $(".hideDonationAmount").show();
+                // $(".hideDonationSectionClass").hide();
+            } else{
+                totalMembership = parseFloat(totalMembership) + parseFloat(donationAmt);
+                totalMembership = totalMembership.toFixed(2);
+                donationAmt = parseFloat(donationAmt);
+                donationAmt = donationAmt.toFixed(2); 
+                $('.displaytotal').html('$'+totalMembership);
+                $('.displaytotalNew').html('$'+totalMembership);
+                $('.updateDontaionAmt').html('$'+donationAmt);
+                $(".showDonationTextBox").hide();
+                $(".hideDonationAmount").show();
+            } 
+        });
+        
+    }
+    
+    function isEmptyTxt(objId, msg) {
+        var data = $('.' + objId).val();
+        
+        if (data == null || data == '') {
+            $('.'+objId).siblings("div").remove();
+            $('.' + objId).after("<div> " + msg + "</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).removeClass(".alert alert-danger");
+            IsSuccess = true;
+        }
+        return IsSuccess;
+    }
+    
+    function isEmptyDrop(objId, msg) {
+        var grade = $('.' + objId).val();
+        if (grade == '--None--' || grade == '--None--') {
+            
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div> "+msg+"</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).removeClass(".alert alert-danger");
+            IsSuccess = true;
+        }
+        return IsSuccess;
+    }
+    
+    function isValidZip(objId, objName) {
+        var zip = $('.' + objId).val();
+        if (zip == null || zip == '') {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div> " + objName + " is Required.</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else if($('#isOverSeasChk').val() == false || CountryVerify == true)
+            {
+            if (zip.match(/^[0-9-+]+$/) === null || zip.length < 5) {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div> Invalid " + objName + ".</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+                }
+             else
+             {
+             $('.' + objId).siblings("div").remove();
+             $('.' + objId).removeClass(".alert alert-danger");
+            IsSuccess = true;
+           }
+        } else {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).removeClass(".alert alert-danger");
+            IsSuccess = true;
+        }
+        return IsSuccess;
+    }
+    
+    function isValidEmail(objId, objName) {
+        var email = $('.' + objId).val();
+        if (email == null || email == '') {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div> "+objName+" is Required.</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else if (email !== '' && email.match(/.+@.+\..+/i) === null) {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).after("<div> Invalid "+objName+".</div>");
+            $('.' + objId).addClass(".alert alert-danger");
+            IsSuccess = false;
+        } else {
+            $('.' + objId).siblings("div").remove();
+            $('.' + objId).removeClass(".alert alert-danger");
+            IsSuccess = true;
+        }
+        return IsSuccess;
+    } 
+    
+    
+    
+    </script>
+    
+<script type="text/javascript">
+  var CountryVerify = false;
+   $('.myCountry1').change(function(){
+          
+      if($('.myCountry1').val()  === "US"){        
+            CountryVerify = true;
+      }else{
+          CountryVerify = false;
+      }
+     isValidZip('myZipCode','Zip Code');
+  });  
+   
+   
+    function onPaymentCheked1(event,ref,val){
+        //var messageBox = this || event.target || event.srcElement;
+        var messageBox = ref || event.target || event.srcElement;
+        //var amountVal = ref.value;
+        //alert(amountVal);
+        //alert(ref.className);
+        var amountVal = val;
+        if(amountVal>0){
+            $(".tobehide").hide();
+        }else{
+            $(".tobehide").show();
+        }
+        if($(ref).hasClass("otherRadio")){
+            amountVal = $(".otherCheckBox").removeAttr("disabled").val();
+            pymentCheckedAction(amountVal);
+        }
+        else{
+            if($( ".otherRadio" ).prop( "checked") == false){
+                $(".otherCheckBox").attr("disabled","disabled");
+            }
+            //$(".otherCheckBox").attr("disabled","disabled").val("");
+            pymentCheckedAction(amountVal);
+        }
+        
+    }
+    
+        $('.DonationTxtBox1').keyup(function(e) {
+            //var regex = /^\d+(\.\d{0,2})?$/g;
+            
+            chk = IsNumeric(this.value);     
+            if(chk == true){
+                var regex = /^\d{0,5}(\.\d{0,2})?$/g;
+                if (!regex.test(this.value)) {
+                    this.value = '';
+                    $('.DonationTxtBox1').siblings("div").remove();
+                    //$('.DonationTxtBox1').after("<div style='width: 340px;'><br/><p>Please enter valid amount.</p></div>");
+                    $('.DonationTxtBox1').addClass(".alert alert-danger");
+                    return false;
+                }
+                else
+                {
+                    $('.DonationTxtBox1').siblings("div").remove();
+                    $('.DonationTxtBox1').removeClass(".alert alert-danger");
+                    return true
+                }
+            }else
+            {
+                this.value = '';
+                $('.' + objId).siblings("div").remove();
+                $('.' + objId).after("<div> <br/>Invalid Amount.</div>");
+                $('.' + objId).addClass(".alert alert-danger");
+                
+                return false;
+            }
+        });
+    function getOtherTextValue(event,ref){
+        //alert(ref.className);
+        //$( ".otherRadio" ).trigger( "click" );
+        var otherTextBoxValue = $(".otherCheckBox").val();
+        if(checkvalue("otherCheckBox")==true){
+            onPaymentCheked1(event,ref, otherTextBoxValue);
+        }
+    }
+        
+    var flowname =$("#flownameID").val();  // getQueryStringValue('flow');
+    if(flowname =='TROOP'){
+        document.getElementById("tab_troop").className = "active";
+    }
+    if(flowname =='MEMBERSHIP'){
+        document.getElementById("tab_membership").className = "active";
+    }
+        function clereState(obj){
+         var countryName = $(obj).val();
+         if(countryName === 'US'){
+             $("[id*='stateTxt']").val('');
+         }
+     }
+    </script>
+    </apex:outputPanel>
+    </body>
+    <apex:includeScript value="{!$Resource.RenewalsGA}"/>
+ 
+</apex:page>
+               
